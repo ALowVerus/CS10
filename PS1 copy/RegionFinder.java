@@ -18,7 +18,7 @@ public class RegionFinder {
 	private BufferedImage image;                            // the image in which to find regions
 	private BufferedImage recoloredImage;                   // the image with identified regions recolored
 
-	private ArrayList<ArrayList<Point>> regions;			// a region is a list of points
+	private ArrayList<ArrayList<Pixel>> regions;			// a region is a list of points
 															// so the identified regions are in a list of lists of points
 
 	public RegionFinder() {
@@ -63,8 +63,13 @@ public class RegionFinder {
 	/**
 	 * Returns the largest region detected (if any region has been detected)
 	 */
-	public ArrayList<Point> largestRegion() {
-		
+	public ArrayList<Pixel> largestRegion() {
+		ArrayList<Pixel> largest = new ArrayList<Pixel>;
+		for (i=0; i<regions.getSize(), i++) {
+			if (largest.getSize() < regions.get(i).getSize()) {
+				largest = regions.get(i);
+			}
+		}
 	}
 
 	/**
