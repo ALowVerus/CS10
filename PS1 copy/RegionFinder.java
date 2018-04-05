@@ -45,14 +45,16 @@ public class RegionFinder {
 	 * Sets regions to the flood-fill regions in the image, similar enough to the trackColor.
 	 */
 	public void findRegions(Color targetColor) {
-		// TODO: YOUR CODE HERE
+		for (x = 0; x < image.getWidth(); x++) {
+			for (y = 0; y < image.getHeight(); y++) {
+				
 	}
 
 	/**
 	 * Tests whether the two colors are "similar enough" (your definition, subject to the maxColorDiff threshold, which you can vary).
 	 */
 	private static boolean colorMatch(Color c1, Color c2) {
-		if (Math.abs(c1 - c2) < 200) {
+		if (Math.abs(c1.getRGB() - c2.getRGB()) < maxColorDifference) {
 			return true;
 		return false;
 		}
@@ -62,7 +64,7 @@ public class RegionFinder {
 	 * Returns the largest region detected (if any region has been detected)
 	 */
 	public ArrayList<Point> largestRegion() {
-		// TODO: YOUR CODE HERE
+		
 	}
 
 	/**
