@@ -24,6 +24,14 @@ public class CamPaint extends WebcamTest {
 		finder = new RegionFinder();
 		clearPainting();
 	}
+	
+	public Color getSwapColor(Color color) {
+			int red = color.getRed();
+			int green = color.getGreen();
+			int blue = color.getBlue();				
+			Color newColor = new Color(green, blue, red);
+			return newColor
+		}
 
 	/**
 	 * Resets the painting to a blank image
@@ -46,7 +54,8 @@ public class CamPaint extends WebcamTest {
 	 */
 	@Override
 	public void processImage() {
-		// TODO: YOUR CODE HERE
+		theRegion = proc.largestRegion();  // Unsure about proc, maybe the method should act on something else?
+		Color swapColor = 
 	}
 
 	/**

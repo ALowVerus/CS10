@@ -82,15 +82,15 @@ public class RegionFinder {
 	/**
 	 * Returns the largest region detected (if any region has been detected)
 	 */
-	public Color ArrayList<Pixel> largestRegion() {
+	public ArrayList<Pixel> largestRegion() {
 		ArrayList<Pixel> largest = new ArrayList<Pixel>;
 		for (i = 0; i < regions.getSize(); i++) {
 			if (largest.getSize() < regions.get(i).getSize()) {
 				largest = regions.get(i);
 			}
 		}
-		Color targetColor = new Color largest.get(0).getRGB();
-		return targetColor;
+		targetColorlargest.get(0).getRGB();
+		return largest;
 	}
 
 	/**
