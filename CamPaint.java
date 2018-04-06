@@ -30,7 +30,7 @@ public class CamPaint extends WebcamTest {
 			int green = color.getGreen();
 			int blue = color.getBlue();				
 			Color newColor = new Color(green, blue, red);
-			return newColor
+			return newColor;
 		}
 
 	/**
@@ -46,7 +46,7 @@ public class CamPaint extends WebcamTest {
 	 */
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(proc.getImage(), 0, 0, null);
+		g.drawImage(painting, 0, 0, null);
 	}
 
 	/**
@@ -55,9 +55,10 @@ public class CamPaint extends WebcamTest {
 	@Override
 	public void processImage() {
 		theRegion = proc.largestRegion();  // Unsure about proc, maybe the method should act on something else?
-		Color swapColor = getSwapColor(getTargetColor());
+		Color swappedColor = getSwapColor(getTargetColor());
 		for (i = 0; i < theRegion.getSize() - 1; i++) {
-			theRegion().get(i).setRGB(swapColor); // Currently mostly pseudocode- need to figure this out
+			Pixel currentPixel = theRegion.get(i);
+			painting.setRGB(currentPixel.getX(), currentPixel.getY(), swappedColor); // Currently mostly pseudocode- need to figure this out
 		}
 	}
 

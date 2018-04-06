@@ -44,6 +44,10 @@ public class RegionFinder {
 	public BufferedImage getImage() {
 		return image;
 	}
+	
+	public Color getTargetColor() {
+		return targetColor;
+	}
 
 	public BufferedImage getRecoloredImage() {
 		return recoloredImage;
@@ -89,7 +93,7 @@ public class RegionFinder {
 				largest = regions.get(i);
 			}
 		}
-		targetColorlargest.get(0).getRGB();
+		targetColor = largest.get(0).getRGB();
 		return largest;
 	}
 

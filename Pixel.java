@@ -1,6 +1,8 @@
 
 public class Pixel {
-
+	private int x, y;
+	private boolean visited;
+	
 	public Pixel(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -16,11 +18,11 @@ public class Pixel {
 	}
 	
 	public boolean getVisited() {
-		return visited;
+		return true;
 	}
 	
 	public void setVisited(boolean z) {
-		self.visited = z;
+		this.visited = z;
 	}
 	
 	public void setPosition(int x, int y) {
