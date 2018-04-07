@@ -67,10 +67,10 @@ public class RegionFinder {
 				while (stack.size() > 0) {
 					Pixel popped = stack.get(stack.size() - 1);
 					if (popped.getVisited() == false && matchRGB(initializer.getRGB(), targetRGB)) {
-						for (int y = -1, y <= 1, y ++) {									// For y one above and one below
-							if (0 < popped.getY() + y < image.getHeight() - 1) {			// Check if chosen y is between bounds
-								for (int x = 1, x <= 3, x ++) {								// For x one above and one below
-									for (0 < popped.getX() + x < image.getWidth() - 1)		// Check if chosen x is between bounds
+						for (int y = -1; y <= 1; y ++) {									// For y one above and one below
+							if (0 < popped.getY() + y && popped.getY() + y < image.getHeight() - 1) {			// Check if chosen y is between bounds
+								for (int x = 1; x <= 3; x ++) {								// For x one above and one below
+									if (0 < popped.getX() + x && popped.getX() + x < image.getWidth() - 1) {		// Check if chosen x is between bounds
 										Pixel pixelChosen = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
 										if (pixelChosen.getVisited() == false) {
 											stack.add(pixelChosen);
