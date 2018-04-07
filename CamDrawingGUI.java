@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Chris Bailey-Kellogg, Dartmouth CS 10, Winter 2014
  * @author CBK, Spring 2015, revised to factor out the image, provide simple event handling
  */
-public class DrawingGUI extends JFrame {
+public class CamDrawingGUI extends JFrame {
 	public JComponent canvas;						// handles graphics display
 	protected int width, height;					// the size of the drawing window
 	protected Timer timer;							// one delay-driven event
@@ -22,7 +22,7 @@ public class DrawingGUI extends JFrame {
 	 * Creates an empty, title-less frame.
 	 * Call initWindow to finish it off.
 	 */
-	public DrawingGUI() {
+	public CamDrawingGUI() {
 		super("");
 	}
 
@@ -30,7 +30,7 @@ public class DrawingGUI extends JFrame {
 	 * Creates an empty frame.
 	 * Call initWindow to finish it off.
 	 */
-	public DrawingGUI(String title) {
+	public CamDrawingGUI(String title) {
 		super(title);
 	}
 
@@ -41,7 +41,7 @@ public class DrawingGUI extends JFrame {
 	 * @param width		window size
 	 * @param height	window size
 	 */
-	public DrawingGUI(String title, int width, int height) {
+	public CamDrawingGUI(String title, int width, int height) {
 		super(title);
 		initWindow(width, height);
 	}

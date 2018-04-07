@@ -10,13 +10,13 @@ import java.awt.Color;
  * @author CBK, Spring 2015, refactored to separate GUI from operations
  * @author Aidan Low, no partner, added image modification functionality
  */
-public class ImageProcessor0 {
+public class CamImageProcessor0 {
 	private BufferedImage image;		// the current image being processed
 
 	/**
 	 * @param image		the original
 	 */
-	public ImageProcessor0(BufferedImage image) {
+	public CamImageProcessor0(BufferedImage image) {
 		this.image = image;
 	}
 	

@@ -12,8 +12,8 @@ import java.awt.image.*;
  * @author CBK, Spring 2015, refactored to separate GUI from operations
  * @author Aidan Low, no partner, added mouse motion and image modification functionality
  */
-public class ImageProcessingGUI0 extends DrawingGUI {
-	private ImageProcessor0 proc;		// handles the image processing
+public class CamImageProcessingGUI0 extends CamDrawingGUI {
+	private CamImageProcessor0 proc;		// handles the image processing
 	private static String origin = "SA3_PicProcessing/";
 	private Boolean brushDown = false; 	// init to false to start without drawing
 	private char opMode = 'n';			// init to 'n' to start without drawing and prevent error
@@ -21,13 +21,13 @@ public class ImageProcessingGUI0 extends DrawingGUI {
 	/**
 	 * Creates the GUI for the image processor, with the window scaled to the to-process image's size
 	 */
-	public ImageProcessingGUI0(ImageProcessor0 proc) {
+	public CamImageProcessingGUI0(CamImageProcessor0 proc) {
 		super("Image processing", proc.getImage().getWidth(), proc.getImage().getHeight());
 		this.proc = proc;
 	}
 
 	/**
-	 * DrawingGUI method, here showing the current image
+	 * CamDrawingGUI method, here showing the current image
 	 */
 	@Override
 	public void draw(Graphics g) {
@@ -36,7 +36,7 @@ public class ImageProcessingGUI0 extends DrawingGUI {
 	}
 
 	/**
-	 * DrawingGUI method, here dispatching on image processing operations
+	 * CamDrawingGUI method, here dispatching on image processing operations
 	 */
 	@Override
 	public void handleKeyPress(char op) {
@@ -97,7 +97,7 @@ public class ImageProcessingGUI0 extends DrawingGUI {
 				// Load the image to process
 				BufferedImage baker = loadImage(origin + "baker-400-300.jpg");
 				// Create a new processor, and a GUI to handle it
-				new ImageProcessingGUI0(new ImageProcessor0(baker));
+				new CamImageProcessingGUI0(new CamImageProcessor0(baker));
 			}
 		});
 	}
