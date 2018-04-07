@@ -56,7 +56,7 @@ public class CamPaint extends WebcamTest {
 	public void processImage() {
 		theRegion = proc.largestRegion();  // Unsure about proc, maybe the method should act on something else?
 		Color swappedColor = getSwapColor(getTargetColor());
-		for (i = 0; i < theRegion.getSize() - 1; i++) {
+		for (int i = 0; i < theRegion.getSize() - 1; i++) {
 			Pixel currentPixel = theRegion.get(i);
 			painting.setRGB(currentPixel.getX(), currentPixel.getY(), swappedColor); // Currently mostly pseudocode- need to figure this out
 		}

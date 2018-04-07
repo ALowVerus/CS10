@@ -8,11 +8,12 @@ import javax.swing.*;
 public class Pixel {
 	private int x, y;
 	private boolean visited;
-	private Color color;
+	private int rgb;
 	
-	public Pixel(int x, int y, BufferedImage image) {
+	public Pixel(int x, int y, int rgb) {
 		this.x = x;
 		this.y = y;
+		this.rgb = rgb;
 		this.visited = false;
 	}
 	
@@ -37,12 +38,12 @@ public class Pixel {
 		this.y = y;
 	}
 	
-	public void setColor(Color color) {
-		this.color = color;
+	public void setRGB(int rgb) {
+		this.rgb = rgb;
 	}
 	
-	public Color getColor() {
-		return this.color;
+	public int getRGB() {
+		return this.rgb;
 	}
 
 }

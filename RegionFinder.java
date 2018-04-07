@@ -21,8 +21,9 @@ public class RegionFinder {
 	private ArrayList<ArrayList<Pixel>> regions;			// a region is a list of points
 															// so the identified regions are in a list of lists of points
 
+	private ArrayList<Pixel> stack;
 	public ArrayList<Pixel> pixelArray;
-	public Color targetColor;
+	public int targetRGB;
 	
 	public RegionFinder() {
 		this.image = null;
@@ -32,7 +33,7 @@ public class RegionFinder {
 		this.image = image;
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
-				pixelArray.add(new Pixel(x, y));
+				pixelArray.add(new Pixel(x, y, image.getRGB(x, y)));
 			}
 		}
 	}
@@ -45,8 +46,8 @@ public class RegionFinder {
 		return image;
 	}
 	
-	public Color getTargetColor() {
-		return targetColor;
+	public int getTargetRGB() {
+		return targetRGB;
 	}
 
 	public BufferedImage getRecoloredImage() {
@@ -59,11 +60,11 @@ public class RegionFinder {
 	public void findRegions(Color targetColor) {
 		for (int i = 0; i < pixelArray.size(); i++) {
 			Pixel initializer = pixelArray.get(i);
-			if (initializer.getVisited() == false && colorMatch(initializer.getColor(), targetColor)) {
-				ArrayList<Pixel> stack = new ArrayList<Pixel>;
-				stack.get(0) = pixelArray.get(i);
-				while (stack.getSize() > 0) {
-					Pixel popped = stack.get(stack.getSize() - 1);
+			if (initializer.getVisited() == false && matchRGB(initializer.getRGB(), targetRGB)) {
+				stack.clear();
+				stack.set(0, pixelArray.get(i));
+				while (stack.size() > 0) {
+					Pixel popped = stack.get(stack.size() - 1);
 					stack.remove(popped);
 					popped.setVisited(true);
 					
@@ -76,24 +77,24 @@ public class RegionFinder {
 	/**
 	 * Tests whether the two colors are "similar enough" (your definition, subject to the maxColorDiff threshold, which you can vary).
 	 */
-	private static boolean colorMatch(Color c1, Color c2) {
-		if (Math.abs(c1.getRGB() - c2.getRGB()) < maxColorDifference) {
+	private static boolean matchRGB(int rgb1, int rgb2) {	// Pretty sure this isn't how dif works.
+		if ( Math.abs(rgb1 - rgb2) < maxColorDiff ) {
 			return true;
-		return false;
 		}
+		return false;
 	}
 
 	/**
 	 * Returns the largest region detected (if any region has been detected)
 	 */
 	public ArrayList<Pixel> largestRegion() {
-		ArrayList<Pixel> largest = new ArrayList<Pixel>;
-		for (i = 0; i < regions.getSize(); i++) {
-			if (largest.getSize() < regions.get(i).getSize()) {
+		ArrayList<Pixel> largest = regions.get(0);	// Initialize largest to first region
+		for (int i = 0; i < regions.size(); i++) {
+			if (largest.size() < regions.get(i).size()) {
 				largest = regions.get(i);
 			}
 		}
-		targetColor = largest.get(0).getRGB();
+		targetRGB = largest.get(0).getRGB();
 		return largest;
 	}
 
