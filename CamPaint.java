@@ -9,6 +9,7 @@ import javax.swing.*;
  * Scaffold for PS-1, Dartmouth CS 10, Fall 2016
  * 
  * @author Chris Bailey-Kellogg, Spring 2015 (based on a different webcam app from previous terms)
+ * @author Aidan Low and Eitan Vilker, PS 1
  */
 public class CamPaint extends WebcamTest {
 	private char displayMode = 'w';			// what to display: 'w': live webcam, 'r': recolored image, 'p': painting
@@ -54,7 +55,7 @@ public class CamPaint extends WebcamTest {
 	 */
 	@Override
 	public void processImage() {
-		theRegion = proc.largestRegion();  // Unsure about proc, maybe the method should act on something else?
+		theRegion = painting.largestRegion();  // Unsure about proc, maybe the method should act on something else?
 		Color swappedColor = getSwapColor(getTargetColor());
 		for (int i = 0; i < theRegion.getSize() - 1; i++) {
 			Pixel currentPixel = theRegion.get(i);

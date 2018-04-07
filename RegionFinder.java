@@ -10,6 +10,7 @@ import java.util.*;
  * @author Chris Bailey-Kellogg, Winter 2014 (based on a very different structure from Fall 2012)
  * @author Travis W. Peters, Dartmouth CS 10, Updated Winter 2015
  * @author CBK, Spring 2015, updated for CamPaint
+ * @author Aidan Low and Eitan Vilker, PS 1
  */
 public class RegionFinder {
 	private static final int maxColorDiff = 20;				// how similar a pixel color must be to the target color, to belong to a region
@@ -66,28 +67,16 @@ public class RegionFinder {
 				while (stack.size() > 0) {
 					Pixel popped = stack.get(stack.size() - 1);
 					if (popped.getVisited() == false && matchRGB(initializer.getRGB(), targetRGB)) {
-						if (popped.getY() > 0) {
-							Pixel pixelNorth = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
-							if (pixelNorth.getVisited() == false) {
-								stack.add(pixelNorth);
-							}
-						}
-						if (popped.getX() > 0) {
-							Pixel pixelWest = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
-							if (pixelWest.getVisited() == false) {
-								stack.add(pixelWest);
-							}
-						}
-						if (popped.getX() < image.getWidth() - 1) {
-							Pixel pixelEast = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
-							if (pixelEast.getVisited() == false) {
-								stack.add(pixelEast);
-							}
-						}
-						if (popped.getY() < image.getHeight() - 1) {
-							Pixel pixelSouth = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
-							if (pixelSouth.getVisited() == false) {
-								stack.add(pixelSouth);
+						for (int y = -1, y <= 1, y ++) {									// For y one above and one below
+							if (0 < popped.getY() + y < image.getHeight() - 1) {			// Check if chosen y is between bounds
+								for (int x = 1, x <= 3, x ++) {								// For x one above and one below
+									for (0 < popped.getX() + x < image.getWidth() - 1)		// Check if chosen x is between bounds
+										Pixel pixelChosen = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
+										if (pixelChosen.getVisited() == false) {
+											stack.add(pixelChosen);
+										}
+									}
+								}
 							}
 						}
 					};
