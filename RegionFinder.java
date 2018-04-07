@@ -21,7 +21,7 @@ public class RegionFinder {
 	private ArrayList<ArrayList<Pixel>> regions;			// a region is a list of points
 															// so the identified regions are in a list of lists of points
 
-	public pixelArray<Pixel> = [];
+	public ArrayList<Pixel> pixelArray;
 	public Color targetColor;
 	
 	public RegionFinder() {
@@ -30,8 +30,8 @@ public class RegionFinder {
 
 	public RegionFinder(BufferedImage image) {
 		this.image = image;
-		for (x = 0; x < image.getWidth(); x++) {
-			for (y = 0; y < image.getHeight(); y++) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
 				pixelArray.add(new Pixel(x, y));
 			}
 		}
@@ -57,9 +57,9 @@ public class RegionFinder {
 	 * Sets regions to the flood-fill regions in the image, similar enough to the trackColor.
 	 */
 	public void findRegions(Color targetColor) {
-		for (i = 0; i < pixelArray.getSize(); i++) {
+		for (int i = 0; i < pixelArray.size(); i++) {
 			Pixel initializer = pixelArray.get(i);
-			if (initializer.visited == false && colorMatch(initializer.getColor(), targetColor)) {
+			if (initializer.getVisited() == false && colorMatch(initializer.getColor(), targetColor)) {
 				ArrayList<Pixel> stack = new ArrayList<Pixel>;
 				stack.get(0) = pixelArray.get(i);
 				while (stack.getSize() > 0) {
