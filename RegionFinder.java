@@ -65,9 +65,34 @@ public class RegionFinder {
 				stack.set(0, pixelArray.get(i));
 				while (stack.size() > 0) {
 					Pixel popped = stack.get(stack.size() - 1);
-					stack.remove(popped);
+					if (popped.getVisited() == false && matchRGB(initializer.getRGB(), targetRGB)) {
+						if (popped.getY() > 0) {
+							Pixel pixelNorth = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
+							if (pixelNorth.getVisited() == false) {
+								stack.add(pixelNorth);
+							}
+						}
+						if (popped.getX() > 0) {
+							Pixel pixelWest = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
+							if (pixelWest.getVisited() == false) {
+								stack.add(pixelWest);
+							}
+						}
+						if (popped.getX() < image.getWidth() - 1) {
+							Pixel pixelEast = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
+							if (pixelEast.getVisited() == false) {
+								stack.add(pixelEast);
+							}
+						}
+						if (popped.getY() < image.getHeight() - 1) {
+							Pixel pixelSouth = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
+							if (pixelSouth.getVisited() == false) {
+								stack.add(pixelSouth);
+							}
+						}
+					};
 					popped.setVisited(true);
-					
+					stack.remove(popped);
 				}
 			}
 		}

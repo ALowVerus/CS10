@@ -26,7 +26,7 @@ public class Pixel {
 	}
 	
 	public boolean getVisited() {
-		return true;
+		return this.visited;
 	}
 	
 	public void setVisited(boolean z) {
