@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
 import javax.swing.*;
 
 /**
@@ -45,7 +44,6 @@ public class CamPaint extends WebcamTest {
 	 * DrawingGUI method, here drawing one of live webcam, recolored image, or painting, 
 	 * depending on display variable ('w', 'r', or 'p')
 	 */
-	@Override
 	public void draw(Graphics g) {
 		g.drawImage(painting, 0, 0, null);
 	}
@@ -53,20 +51,18 @@ public class CamPaint extends WebcamTest {
 	/**
 	 * Webcam method, here finding regions and updating the painting.
 	 */
-	@Override
 	public void processImage() {
 		ArrayList<Pixel> theRegion = painting.largestRegion();
 		Color swappedColor = getSwapColor(getTargetColor());
 		for (int i = 0; i < theRegion.size() - 1; i++) {
 			Pixel currentPixel = theRegion.get(i);
-			painting.setRGB(currentPixel.getX(), currentPixel.getY(), swappedColor); // Currently mostly pseudocode- need to figure this out
+			painting.setRGB(currentPixel.getX(), currentPixel.getY(), swappedColor);
 		}
 	}
 
 	/**
 	 * Overrides the DrawingGUI method to set the track color.
 	 */
-	@Override
 	public void handleMousePress(int x, int y) {
 		// TODO: YOUR CODE HERE
 	}
@@ -74,7 +70,6 @@ public class CamPaint extends WebcamTest {
 	/**
 	 * DrawingGUI method, here doing various drawing commands
 	 */
-	@Override
 	public void handleKeyPress(char k) {
 		if (k == 'p' || k == 'r' || k == 'w') { // display: painting, recolored image, or webcam
 			displayMode = k;
