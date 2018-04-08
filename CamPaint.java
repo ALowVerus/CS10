@@ -53,7 +53,7 @@ public class CamPaint extends WebcamTest {
 	 */
 	public void processImage() {
 		ArrayList<Pixel> theRegion = painting.largestRegion();
-		Color swappedColor = getSwapColor(getTargetColor());
+		Color swappedColor = getSwapColor((Color) targetColor);
 		for (int i = 0; i < theRegion.size() - 1; i++) {
 			Pixel currentPixel = theRegion.get(i);
 			painting.setRGB(currentPixel.getX(), currentPixel.getY(), swappedColor);
@@ -64,7 +64,7 @@ public class CamPaint extends WebcamTest {
 	 * Overrides the DrawingGUI method to set the track color.
 	 */
 	public void handleMousePress(int x, int y) {
-		// TODO: YOUR CODE HERE
+		int targetColor = painting.getRGB(x, y);
 	}
 
 	/**
