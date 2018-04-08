@@ -22,8 +22,8 @@ public class RegionFinder {
 	private ArrayList<ArrayList<Pixel>> regions;			// a region is a list of points
 															// so the identified regions are in a list of lists of points
 
-	private ArrayList<Pixel> stack;
-	public ArrayList<Pixel> pixelArray;
+	private ArrayList<Pixel> stack = new ArrayList<Pixel>();
+	public ArrayList<Pixel> pixelArray = new ArrayList<Pixel>();
 	public int targetRGB;
 	
 	public RegionFinder() {
