@@ -13,10 +13,10 @@ import javax.swing.*;
 public class CamPaint extends Webcam {
 	private char displayMode = 'p';			// what to display: 'w': live webcam, 'r': recolored image, 'p': painting
 	private RegionFinder finder;			// handles the finding
-	private Color targetColor;          	// color of regions of interest (set by mouse press)
+	private Color targetColor = Color.blue; // color of regions of interest (set by mouse press)
 	private Color paintColor = Color.blue;	// the color to put into the painting from the "brush"
 	private BufferedImage painting;			// the resulting masterpiece
-
+	
 	/**
 	 * Initializes the region finder and the drawing
 	 */
@@ -53,6 +53,7 @@ public class CamPaint extends Webcam {
 	 */
 	@Override
 	public void processImage() {
+		finder.findRegions(targetColor);
 		ArrayList<Pixel> theRegion = finder.largestRegion();
 		Color swappedColor = getSwapColor((Color) targetColor);
 		for (int i = 0; i < theRegion.size() - 1; i++) {
