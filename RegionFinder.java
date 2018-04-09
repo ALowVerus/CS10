@@ -48,8 +48,9 @@ public class RegionFinder {
 		return image;
 	}
 	
-	public int getTargetRGB() {
-		return targetRGB;
+	public Color getTargetColor(int x, int y) {
+		targetRGB = image.getRGB(x, y);
+		return new Color(targetRGB);
 	}
 
 	public BufferedImage getRecoloredImage() {
@@ -73,9 +74,9 @@ public class RegionFinder {
 							if (0 < popped.getY() + y && popped.getY() + y < image.getHeight() - 1) {			// Check if chosen y is between bounds
 								for (int x = 1; x <= 3; x++) {								// For x one above and one below
 									if (0 < popped.getX() + x && popped.getX() + x < image.getWidth() - 1) {		// Check if chosen x is between bounds
-										//Pixel pixelChosen = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
-										if (popped.getVisited() == false && matchRGB(targetColor.getRGB(), image.getRGB(popped.getX(), popped.getY()))) {
-											stack.add(popped);
+										Pixel pixelChosen = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
+										if (pixelChosen.getVisited() == false && matchRGB(targetColor.getRGB(), image.getRGB(pixelChosen.getX(), pixelChosen.getY()))) {
+											stack.add(pixelChosen);
 										}
 									}
 								}
@@ -85,12 +86,10 @@ public class RegionFinder {
 					popped.setVisited(true);
 					stack.remove(popped);
 					potentialRegion.add(popped);
-					System.out.println(new Color(image.getRGB(popped.getX(), popped.getY())).getRed());
-
 				}
 				if (potentialRegion.size() >= minRegion) {
 					regions.add(potentialRegion);
-					//System.out.println("Region added");
+					System.out.println("Region added, size " + String.valueOf(potentialRegion.size()));
 				}
 			}
 		}
@@ -141,7 +140,6 @@ public class RegionFinder {
 		recoloredImage = new BufferedImage(image.getColorModel(), image.copyData(null), image.getColorModel().isAlphaPremultiplied(), null);
 		// Now recolor the regions in it
 		for(int i = 0; i < regions.size(); i++) {
-			//System.out.println(regions.get(i).size());
 			int randomColor = (int) Math.floor(Math.random() * 256 * 256 * 256);
 			for(int j = 0; j < regions.get(i).size(); j++) {
 				//Color swappedColor = getSwapColor(color); for extra credit, not now

@@ -12,13 +12,14 @@ import javax.swing.*;
  */
 public class RegionsTest extends DrawingGUI {
 	private BufferedImage image;
+	private Color targetColor = new Color(255, 30, 25);
 
 	/**
 	 * Test your RegionFinder by passing an image filename and a color to find.
 	 * @param filename
 	 * @param color
 	 */
-	public RegionsTest(String name, RegionFinder finder, Color targetColor) {
+	public RegionsTest(String name, RegionFinder finder) {
 		super(name, finder.getImage().getWidth(), finder.getImage().getHeight());
 
 		// Do the region finding and recolor the image.
@@ -28,6 +29,11 @@ public class RegionsTest extends DrawingGUI {
 	}
 
 	@Override
+	public void handleMousePress(int x, int y) {
+		targetColor = finder.getTargetColor(x, y);
+	}
+	
+	@Override
 	public void draw(Graphics g) {
 		g.drawImage(image, 0, 0, null);
 	}
@@ -36,7 +42,7 @@ public class RegionsTest extends DrawingGUI {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				//new RegionsTest("smiley", new RegionFinder(loadImage("pictures/smiley.png")), new Color(0, 0, 0));
-				new RegionsTest("baker", new RegionFinder(loadImage("git/baker.jpg")), new Color(130, 100, 100));
+				new RegionsTest("baker", new RegionFinder(loadImage("git/baker.jpg")));
 			}
 		});
 	}
