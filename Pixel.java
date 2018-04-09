@@ -10,6 +10,13 @@ public class Pixel {
 	private boolean visited;
 	private int rgb;
 	
+	public Pixel(int x, int y) {
+		this.x = x;
+		this.y = y;
+		this.rgb = -1;
+		this.visited = false;
+	}
+	
 	public Pixel(int x, int y, int rgb) {
 		this.x = x;
 		this.y = y;

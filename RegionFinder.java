@@ -69,18 +69,43 @@ public class RegionFinder {
 				while (stack.size() > 0) {
 					Pixel popped = stack.get(stack.size() - 1);
 					if (popped.getVisited() == false && matchRGB(initializer.getRGB(), targetColor.getRGB())) {
-						for (int y = -1; y <= 1; y ++) {									// For y one above and one below
-							if (0 < popped.getY() + y && popped.getY() + y < image.getHeight() - 1) {			// Check if chosen y is between bounds
-								for (int x = 1; x <= 3; x++) {								// For x one above and one below
-									if (0 < popped.getX() + x && popped.getX() + x < image.getWidth() - 1) {		// Check if chosen x is between bounds
-										//Pixel pixelChosen = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
-										if (popped.getVisited() == false && matchRGB(targetColor.getRGB(), image.getRGB(popped.getX(), popped.getY()))) {
-											stack.add(popped);
-										}
-									}
-								}
+						if (0 < popped.getY() + 1 && popped.getY() + 1 < image.getHeight() - 1) {			// Check if chosen y is between bounds
+							Pixel poppedDown = new Pixel(popped.getX(), popped.getY() + 1);
+							if (poppedDown.getVisited() == false && matchRGB(targetColor.getRGB(), image.getRGB(poppedDown.getX(), poppedDown.getY()))) {
+								stack.add(poppedDown);
 							}
 						}
+						if (0 < popped.getY() + 1 && popped.getY() + 1 < image.getHeight() - 1) {			// Check if chosen y is between bounds
+							Pixel poppedUp = new Pixel(popped.getX(), popped.getY() - 1);
+							if (poppedUp.getVisited() == false && matchRGB(targetColor.getRGB(), image.getRGB(poppedUp.getX(), poppedUp.getY()))) {
+								stack.add(poppedUp);
+							}
+						}
+						if (0 < popped.getX() - 1 && popped.getX() + 1 < image.getWidth() - 1) {			// Check if chosen y is between bounds
+							Pixel poppedLeft = new Pixel(popped.getX() - 1, popped.getY());
+							if (poppedLeft.getVisited() == false && matchRGB(targetColor.getRGB(), image.getRGB(poppedLeft.getX(), poppedLeft.getY()))) {
+								stack.add(poppedLeft);
+							}
+						}
+						if (0 < popped.getX() + 1 && popped.getX() + 1 < image.getWidth() - 1) {			// Check if chosen y is between bounds
+							Pixel poppedRight = new Pixel(popped.getX() + 1, popped.getY());
+							if (poppedRight.getVisited() == false && matchRGB(targetColor.getRGB(), image.getRGB(poppedRight.getX(), poppedRight.getY()))) {
+								stack.add(poppedRight);
+							}
+						}
+								
+//						for (int y = -1; y <= 1; y ++) {									// For y one above and one below
+//							if (0 < popped.getY() + y && popped.getY() + y < image.getHeight() - 1) {			// Check if chosen y is between bounds
+//								for (int x = 1; x <= 3; x++) {								// For x one above and one below
+//									if (0 < popped.getX() + x && popped.getX() + x < image.getWidth() - 1) {		// Check if chosen x is between bounds
+//										//Pixel pixelChosen = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
+//										if (popped.getVisited() == false && matchRGB(targetColor.getRGB(), image.getRGB(popped.getX(), popped.getY()))) {
+//											stack.add(popped);
+//										}
+//									}
+//								}
+//							}
+//						}
 					};
 					popped.setVisited(true);
 					stack.remove(popped);
