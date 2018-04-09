@@ -65,7 +65,6 @@ public class RegionFinder {
 			if (initializer.getVisited() == false && matchRGB(initializer.getRGB(), targetColor.getRGB())) {
 				stack.clear();
 				stack.add(pixelArray.get(i));
-				System.out.println(new Color(image.getRGB(initializer.getX(), initializer.getY())).getRed());
 				ArrayList<Pixel> potentialRegion = new ArrayList<Pixel>();
 				while (stack.size() > 0) {
 					Pixel popped = stack.get(stack.size() - 1);
