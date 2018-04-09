@@ -122,7 +122,7 @@ public class RegionFinder {
 		recoloredImage = new BufferedImage(image.getColorModel(), image.copyData(null), image.getColorModel().isAlphaPremultiplied(), null);
 		// Now recolor the regions in it
 		for(int i = 0; i < regions.size(); i++) {
-			for(int j = 0; j < pixelArray.size(); j++) {
+			for(int j = 0; j < regions.get(i).size(); j++) {
 				
 			}
 		}
