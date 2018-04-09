@@ -13,8 +13,8 @@ import java.util.*;
  * @author Aidan Low and Eitan Vilker, PS 1
  */
 public class RegionFinder {
-	private static final int maxColorDiff = 20;				// how similar a pixel color must be to the target color, to belong to a region
-	private static final int minRegion = 50; 				// how many points in a region to be worth considering
+	private static final int maxColorDiff = 30;				// how similar a pixel color must be to the target color, to belong to a region
+	private static final int minRegion = 20; 				// how many points in a region to be worth considering
 
 	private BufferedImage image;                            // the image in which to find regions
 	private BufferedImage recoloredImage;                   // the image with identified regions recolored
@@ -37,6 +37,7 @@ public class RegionFinder {
 				pixelArray.add(new Pixel(x, y, image.getRGB(x, y)));
 			}
 		}
+		regions = new ArrayList<ArrayList<Pixel>>();
 	}
 
 	public void setImage(BufferedImage image) {
@@ -61,12 +62,13 @@ public class RegionFinder {
 	public void findRegions(Color targetColor) {
 		for (int i = 0; i < pixelArray.size(); i++) {
 			Pixel initializer = pixelArray.get(i);
-			if (initializer.getVisited() == false && matchRGB(initializer.getRGB(), targetRGB)) {
+			if (initializer.getVisited() == false && matchRGB(initializer.getRGB(), targetColor.getRGB())) {
 				stack.clear();
-				stack.set(0, pixelArray.get(i));
+				stack.add(pixelArray.get(i));
+				ArrayList<Pixel> potentialRegion = new ArrayList<Pixel>();
 				while (stack.size() > 0) {
 					Pixel popped = stack.get(stack.size() - 1);
-					if (popped.getVisited() == false && matchRGB(initializer.getRGB(), targetRGB)) {
+					if (popped.getVisited() == false && matchRGB(initializer.getRGB(), targetColor.getRGB())) {
 						for (int y = -1; y <= 1; y ++) {									// For y one above and one below
 							if (0 < popped.getY() + y && popped.getY() + y < image.getHeight() - 1) {			// Check if chosen y is between bounds
 								for (int x = 1; x <= 3; x++) {								// For x one above and one below
@@ -82,6 +84,11 @@ public class RegionFinder {
 					};
 					popped.setVisited(true);
 					stack.remove(popped);
+					potentialRegion.add(popped);
+				}
+				if (potentialRegion.size() >= minRegion) {
+					regions.add(potentialRegion);
+					//System.out.println("Region added");
 				}
 			}
 		}
@@ -92,7 +99,9 @@ public class RegionFinder {
 	 * Tests whether the two colors are "similar enough" (your definition, subject to the maxColorDiff threshold, which you can vary).
 	 */
 	private static boolean matchRGB(int rgb1, int rgb2) {	// Pretty sure this isn't how dif works.
-		if ( Math.abs(rgb1 - rgb2) < maxColorDiff ) {
+		Color color1 = new Color(rgb1);
+		Color color2 = new Color(rgb2);
+		if(Math.abs(color1.getRed() - color2.getRed()) < maxColorDiff && Math.abs(color1.getGreen() - color2.getGreen()) < maxColorDiff && Math.abs(color1.getBlue() - color2.getBlue()) < maxColorDiff){
 			return true;
 		}
 		return false;
@@ -111,6 +120,14 @@ public class RegionFinder {
 		targetRGB = largest.get(0).getRGB();
 		return largest;
 	}
+	
+	public Color getSwapColor(Color color) {
+		int red = color.getRed();
+		int green = color.getGreen();
+		int blue = color.getBlue();				
+		Color newColor = new Color(green, blue, red);
+		return newColor;
+	}
 
 	/**
 	 * Sets recoloredImage to be a copy of image, 
@@ -122,8 +139,11 @@ public class RegionFinder {
 		recoloredImage = new BufferedImage(image.getColorModel(), image.copyData(null), image.getColorModel().isAlphaPremultiplied(), null);
 		// Now recolor the regions in it
 		for(int i = 0; i < regions.size(); i++) {
+			System.out.println(regions.get(i).size());
+			int randomColor = (int) Math.floor(Math.random() * 256 * 256 * 256);
 			for(int j = 0; j < regions.get(i).size(); j++) {
-				
+				//Color swappedColor = getSwapColor(color); for extra credit, not now
+				recoloredImage.setRGB(regions.get(i).get(j).getX(), regions.get(i).get(j).getY(), randomColor);
 			}
 		}
 	}
