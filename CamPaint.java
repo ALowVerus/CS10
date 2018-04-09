@@ -10,7 +10,7 @@ import javax.swing.*;
  * @author Chris Bailey-Kellogg, Spring 2015 (based on a different webcam app from previous terms)
  * @author Aidan Low and Eitan Vilker, PS 1
  */
-public class CamPaint extends WebcamTest {
+public class CamPaint extends Webcam {
 	private char displayMode = 'p';			// what to display: 'w': live webcam, 'r': recolored image, 'p': painting
 	private RegionFinder finder;			// handles the finding
 	private Color targetColor;          	// color of regions of interest (set by mouse press)
@@ -51,6 +51,7 @@ public class CamPaint extends WebcamTest {
 	/**
 	 * Webcam method, here finding regions and updating the painting.
 	 */
+	@Override
 	public void processImage() {
 		ArrayList<Pixel> theRegion = finder.largestRegion();
 		Color swappedColor = getSwapColor((Color) targetColor);
@@ -63,6 +64,7 @@ public class CamPaint extends WebcamTest {
 	/**
 	 * Overrides the DrawingGUI method to set the track color.
 	 */
+	@Override
 	public void handleMousePress(int x, int y) {
 		int targetColor = painting.getRGB(x, y);
 	}
