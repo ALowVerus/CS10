@@ -57,7 +57,7 @@ public class CamPaint extends Webcam {
 		Color swappedColor = getSwapColor((Color) targetColor);
 		for (int i = 0; i < theRegion.size() - 1; i++) {
 			Pixel currentPixel = theRegion.get(i);
-			painting.setRGB(currentPixel.getX(), currentPixel.getY(), swappedColor);
+			painting.setRGB(currentPixel.getX(), currentPixel.getY(), swappedColor.getRGB());
 		}
 	}
 
