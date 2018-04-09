@@ -65,6 +65,7 @@ public class RegionFinder {
 			if (initializer.getVisited() == false && matchRGB(initializer.getRGB(), targetColor.getRGB())) {
 				stack.clear();
 				stack.add(pixelArray.get(i));
+				System.out.println(new Color(image.getRGB(initializer.getX(), initializer.getY())).getRed());
 				ArrayList<Pixel> potentialRegion = new ArrayList<Pixel>();
 				while (stack.size() > 0) {
 					Pixel popped = stack.get(stack.size() - 1);
@@ -85,6 +86,8 @@ public class RegionFinder {
 					popped.setVisited(true);
 					stack.remove(popped);
 					potentialRegion.add(popped);
+					System.out.println(new Color(image.getRGB(popped.getX(), popped.getY())).getRed());
+
 				}
 				if (potentialRegion.size() >= minRegion) {
 					regions.add(potentialRegion);
@@ -139,7 +142,7 @@ public class RegionFinder {
 		recoloredImage = new BufferedImage(image.getColorModel(), image.copyData(null), image.getColorModel().isAlphaPremultiplied(), null);
 		// Now recolor the regions in it
 		for(int i = 0; i < regions.size(); i++) {
-			System.out.println(regions.get(i).size());
+			//System.out.println(regions.get(i).size());
 			int randomColor = (int) Math.floor(Math.random() * 256 * 256 * 256);
 			for(int j = 0; j < regions.get(i).size(); j++) {
 				//Color swappedColor = getSwapColor(color); for extra credit, not now
