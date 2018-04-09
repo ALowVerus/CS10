@@ -73,9 +73,9 @@ public class RegionFinder {
 							if (0 < popped.getY() + y && popped.getY() + y < image.getHeight() - 1) {			// Check if chosen y is between bounds
 								for (int x = 1; x <= 3; x++) {								// For x one above and one below
 									if (0 < popped.getX() + x && popped.getX() + x < image.getWidth() - 1) {		// Check if chosen x is between bounds
-										Pixel pixelChosen = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
-										if (pixelChosen.getVisited() == false) {
-											stack.add(pixelChosen);
+										//Pixel pixelChosen = pixelArray.get(popped.getY() * image.getWidth() + popped.getX());
+										if (popped.getVisited() == false && matchRGB(targetColor.getRGB(), image.getRGB(popped.getX(), popped.getY()))) {
+											stack.add(popped);
 										}
 									}
 								}
