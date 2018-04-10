@@ -17,6 +17,7 @@ public class RegionFinder {
 	private static final int minRegion = 20; 				// how many points in a region to be worth considering
 
 	private BufferedImage image;                            // the image in which to find regions
+	private BufferedImage visitedImage;						// the image which stores 
 	private BufferedImage recoloredImage;                   // the image with identified regions recolored
 
 	private ArrayList<ArrayList<Pixel>> regions;			// a region is a list of points
@@ -32,12 +33,18 @@ public class RegionFinder {
 
 	public RegionFinder(BufferedImage image) {
 		this.image = image;
-		for (int x = 0; x < image.getWidth(); x++) {
-			for (int y = 0; y < image.getHeight(); y++) {
-				pixelArray.add(new Pixel(x, y, image.getRGB(x, y)));
+//		for (int x = 0; x < image.getWidth(); x++) {
+//			for (int y = 0; y < image.getHeight(); y++) {
+//				pixelArray.add(new Pixel(x, y, image.getRGB(x, y)));
+//			}
+//		}
+//		regions = new ArrayList<ArrayList<Pixel>>();
+		visitedImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+		for (int x = 0; x < image.getWidth(); x ++) {
+			for (int y = 0; y < image.getHeight(); y ++) {
+				visitedImage.setRGB(x, y, 0);
 			}
 		}
-		regions = new ArrayList<ArrayList<Pixel>>();
 	}
 
 	public void setImage(BufferedImage image) {
@@ -60,6 +67,38 @@ public class RegionFinder {
 	 * Sets regions to the flood-fill regions in the image, similar enough to the trackColor.
 	 */
 	public void findRegions(Color targetColor) {
+		ArrayList<Integer> targetsX = new ArrayList<Integer>();
+		ArrayList<Integer> targetsY = new ArrayList<Integer>();
+		ArrayList<Integer> regionOriginsX = new ArrayList<Integer>();
+		ArrayList<Integer> regionOriginsY = new ArrayList<Integer>();
+		ArrayList<Integer> regionsSize = new ArrayList<Integer>();
+		for (int chosenX = 0; chosenX < image.getWidth(); chosenX ++) {			// For all pixels
+			for (int chosenY = 0; chosenY < image.getHeight(); chosenY ++) {
+				if (visitedImage.getRGB(chosenX, chosenY) == 0 && matchRGB(image.getRGB(chosenX, chosenY), targetColor.getRGB())) {
+					visitedImage.setRGB(chosenX, chosenY, 1);				// Set to visited
+					int thisRegionSize = 0;
+					regionOriginsX.add(chosenX);
+					regionOriginsY.add(chosenY);
+					targetsX.add(chosenX);
+					targetsY.add(chosenY);
+					while (targetsX.size() > 0) {
+						chosenX = targetsX.get(0);
+						chosenY = targetsY.get(0);
+						for (int nextY = Math.max(chosenY - 1, 0); nextY < Math.min(chosenY + 1, image.getHeight()); nextY++) {									// For y one above and one below
+							for (int nextX = Math.max(chosenX - 1, 0); nextX < Math.min(chosenX + 1, image.getWidth()); nextX++) {								// For x one above and one below
+								if (visitedImage.getRGB(chosenX, chosenY) == 0 && matchRGB(image.getRGB(chosenX, chosenY), targetColor.getRGB())) {
+									targetsX.add(nextX);
+									targetsY.add(nextY);
+									thisRegionSize += 1;
+								}
+							}
+						}
+					}
+					regionsSize.add(thisRegionSize);
+				}
+			}
+		}
+			
 		for (int i = 0; i < pixelArray.size(); i++) {
 			Pixel initializer = pixelArray.get(i);
 			if (!initializer.getVisited() && matchRGB(initializer.getRGB(), targetColor.getRGB())) {
