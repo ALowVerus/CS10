@@ -68,12 +68,14 @@ public class RegionFinder {
 	
 	// THERE IS A PROBLEM HERE WITH COLORS. HOW DO THEY WORK? WHAT SHOULD WE USE?
 	private void setVisited(int x, int y, Boolean z) {
+		Color black = new Color(0, 0, 0);  // These 2 lines have been added to get around single-integer colors
+		Color white = new Color(255, 255, 255);
 		if (z) {
-			visitedImage.setRGB(x, y, 10000);
+			visitedImage.setRGB(x, y, white.getRGB());
 			System.out.println("True! " + String.valueOf(x) + "," + String.valueOf(y) + " Value turned to " + String.valueOf(visitedImage.getRGB(x, y)));
 		}
 		else {
-			visitedImage.setRGB(x, y, 0);
+			visitedImage.setRGB(x, y, black.getRGB());
 			System.out.println("False! " + String.valueOf(x) + "," + String.valueOf(y) + " turned to " + String.valueOf(visitedImage.getRGB(x, y)));
 		}
 		
@@ -81,7 +83,8 @@ public class RegionFinder {
 	
 	// THERE IS A PROBLEM WITH RETRIEVING RGB. EXPLAIN! IT DOESN'T GIVE WHAT WE PUT IN!
 	private Boolean getVisited(int x, int y) {
-		if (visitedImage.getRGB(x, y) == -16777216) {
+		Color black = new Color(0, 0, 0);
+		if (visitedImage.getRGB(x, y) == black.getRGB()) {
 			return false;
 		}
 		return true;
