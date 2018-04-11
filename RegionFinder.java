@@ -66,18 +66,20 @@ public class RegionFinder {
 		}
 	}
 	
+	// THERE IS A PROBLEM HERE WITH COLORS. HOW DO THEY WORK? WHAT SHOULD WE USE?
 	private void setVisited(int x, int y, Boolean z) {
 		if (z) {
 			visitedImage.setRGB(x, y, 10000);
-			//System.out.println("True! " + String.valueOf(x) + "," + String.valueOf(y) + " Value turned to " + String.valueOf(visitedImage.getRGB(x, y)));
+			System.out.println("True! " + String.valueOf(x) + "," + String.valueOf(y) + " Value turned to " + String.valueOf(visitedImage.getRGB(x, y)));
 		}
 		else {
 			visitedImage.setRGB(x, y, 0);
-			//System.out.println("False! " + String.valueOf(x) + "," + String.valueOf(y) + " turned to " + String.valueOf(visitedImage.getRGB(x, y)));
+			System.out.println("False! " + String.valueOf(x) + "," + String.valueOf(y) + " turned to " + String.valueOf(visitedImage.getRGB(x, y)));
 		}
 		
 	}
 	
+	// THERE IS A PROBLEM WITH RETRIEVING RGB. EXPLAIN! IT DOESN'T GIVE WHAT WE PUT IN!
 	private Boolean getVisited(int x, int y) {
 		if (visitedImage.getRGB(x, y) == -16777216) {
 			return false;
@@ -106,12 +108,18 @@ public class RegionFinder {
 						//System.out.println("Origin determined! Chosen " + String.valueOf(chosenX) + "," + String.valueOf(chosenY) + ", muh dood");
 						for (int nextY = Math.max(chosenY - 1, 0); nextY < Math.min(chosenY + 1, image.getHeight()); nextY++) {									// For y one above and one below
 							for (int nextX = Math.max(chosenX - 1, 0); nextX < Math.min(chosenX + 1, image.getWidth()); nextX++) {								// For x one above and one below
-								System.out.println("nextX is.... " + String.valueOf(nextX) + "!!!!! nextY is..... " + String.valueOf(nextY));
-								if (!getVisited(nextX, nextY) && matchRGB(image.getRGB(nextX, nextY), targetRGB)) {
-									stackX.add(nextX);
-									stackY.add(nextY);
-									thisRegionSize += 1;
-									System.out.println("Region size incremented! Next " + String.valueOf(nextX) + "," + String.valueOf(nextY) + ", bo-yeeeeeeeee");
+								//System.out.println("nextX is.... " + String.valueOf(nextX) + "!!!!! nextY is..... " + String.valueOf(nextY));
+								System.out.println(getVisited(nextX, nextY));
+								if (!getVisited(nextX, nextY)) {
+									System.out.println("Image rgb is " + String.valueOf(image.getRGB(nextX, nextY)));
+									System.out.println("Target rgb is " + String.valueOf(targetRGB));
+									// THIS STATEMENT NEVER RUNS! THE STACK IS NEVER INCREASED IN SIZE, SO SIZE OF STACK REMAINS 0 OR 1 FROM THE INITIALIZER. REGION SIZE IS ALSO 0.
+									if (matchRGB(image.getRGB(nextX, nextY), targetRGB)) {
+										System.out.println("Region size incremented! Next " + String.valueOf(nextX) + "," + String.valueOf(nextY) + ",  size is " + String.valueOf(thisRegionSize) + ", bo-yeeeeeeeee");
+										stackX.add(nextX);
+										stackY.add(nextY);
+										thisRegionSize += 1;
+									}
 								}
 							}
 						}
@@ -120,6 +128,7 @@ public class RegionFinder {
 						//System.out.println("StackX 0 is " + String.valueOf(stackX.get(0)));
 						//System.out.println("StackY 0 is " + String.valueOf(stackY.get(0)));
 					}
+					System.out.println("This region's size is: " + String.valueOf(thisRegionSize));
 					if(thisRegionSize >= minRegion) {
 						regionsSize.add(thisRegionSize);
 						regionOriginsX.add(specialX);
@@ -132,7 +141,7 @@ public class RegionFinder {
 		clearVisited();
 		System.out.println("OriginsX " + String.valueOf(regionOriginsX.size())
 		+ " OriginsY " + String.valueOf(regionOriginsY.size()) 
-		+ " Size " + String.valueOf(regionsSize.size()));
+		+ " Region size " + String.valueOf(regionsSize.size()));
 	}
 
 	/**
@@ -182,9 +191,10 @@ public class RegionFinder {
 		recoloredImage = new BufferedImage(image.getColorModel(), image.copyData(null), image.getColorModel().isAlphaPremultiplied(), null);
 		// Now recolor the regions in it
 		for (int i = 0; i < regionsSize.size(); i++) {
+			System.out.println(i);
 			int randomColor = (int) Math.floor(Math.random() * 256 * 256 * 256); 	// Set color to make region
 			randomColor = (256*256*256-1);											// Initialize to white for testing
-			for (int n = 0; n < regionsSize.size(); n++) {			// For all pixels
+			for (int n = 0; n < regionsSize.size(); n++) {							// For all pixels
 				int chosenX = regionOriginsX.get(n);
 				int chosenY = regionOriginsY.get(n);
 				stackX.add(chosenX);
@@ -192,7 +202,7 @@ public class RegionFinder {
 				while (stackX.size() > 0) {
 					chosenX = stackX.get(0);
 					chosenY = stackY.get(0);
-					setVisited(chosenX, chosenY, true);					// Set to visited
+					setVisited(chosenX, chosenY, true);								// Set to visited
 					System.out.println(visitedImage.getRGB(chosenX, chosenY));
 					for (int nextY = Math.max(chosenY - 1, 0); nextY < Math.min(chosenY + 1, image.getHeight()); nextY++) {									// For y one above and one below
 						for (int nextX = Math.max(chosenX - 1, 0); nextX < Math.min(chosenX + 1, image.getWidth()); nextX++) {								// For x one above and one below
