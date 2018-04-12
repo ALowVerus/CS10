@@ -13,8 +13,8 @@ import java.util.*;
  * @author Aidan Low and Eitan Vilker, PS 1
  */
 public class RegionFinder {
-	private static final int maxColorDiff = 50;				// how similar a pixel color must be to the target color, to belong to a region
-	private static final int minRegion = 20; 				// how many points in a region to be worth considering
+	private static final int maxColorDiff = 25;				// how similar a pixel color must be to the target color, to belong to a region
+	private static final int minRegion = 50; 				// how many points in a region to be worth considering
 
 	private BufferedImage image;                            // the image in which to find regions
 	private BufferedImage visitedImage;						// the image which stores 
@@ -32,7 +32,6 @@ public class RegionFinder {
 
 	public RegionFinder(BufferedImage image) {
 		this.image = image;
-		visitedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	}
 
 	public void setImage(BufferedImage image) {
@@ -81,6 +80,7 @@ public class RegionFinder {
 	
 	public void findRegions(Color targetColor) {
 		this.targetColor = targetColor;
+		visitedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		clearVisited();
 		for (int chosenX = 0; chosenX < image.getWidth(); chosenX ++) {			// For all pixels
 			for (int chosenY = 0; chosenY < image.getHeight(); chosenY ++) {
@@ -155,9 +155,8 @@ public class RegionFinder {
 		clearVisited();
 		recoloredImage = new BufferedImage(image.getColorModel(), image.copyData(null), image.getColorModel().isAlphaPremultiplied(), null);
 		for (int i = 0; i < regions.size(); i++) {
+			int randomColor = (int) Math.floor(Math.random() * 256 * 256 * 256); 	// Set color to make region
 			for (int k = 0; k < regions.get(i).size(); k ++) {
-				int randomColor = (int) Math.floor(Math.random() * 256 * 256 * 256); 	// Set color to make region
-				randomColor = 0;
 				Point point = regions.get(i).get(k);
 				recoloredImage.setRGB((int)point.getX(), (int)point.getY(), randomColor);
 			}

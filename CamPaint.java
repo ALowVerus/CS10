@@ -11,7 +11,7 @@ import javax.swing.*;
  * @author Aidan Low and Eitan Vilker, PS 1
  */
 public class CamPaint extends Webcam {
-	private char displayMode = 'p';			// what to display: 'w': live webcam, 'r': recolored image, 'p': painting
+	private char displayMode = 'w';			// what to display: 'w': live webcam, 'r': recolored image, 'p': painting
 	private RegionFinder finder;			// handles the finding
 	private Color targetColor = Color.blue; // color of regions of interest (set by mouse press)
 	private Color paintColor = Color.blue;	// the color to put into the painting from the "brush"
@@ -21,7 +21,7 @@ public class CamPaint extends Webcam {
 	 * Initializes the region finder and the drawing
 	 */
 	public CamPaint() {
-		finder = new RegionFinder(painting);
+		finder = new RegionFinder(image);
 	}
 
 	/**
@@ -37,7 +37,8 @@ public class CamPaint extends Webcam {
 	 */
 	public void draw(Graphics g) {
 		// TODO: YOUR CODE HERE
-		g.drawImage(painting, 0, 0, null);
+		clearPainting();
+		g.drawImage(image, 0, 0, null);
 	}
 
 	/**
@@ -46,12 +47,15 @@ public class CamPaint extends Webcam {
 	@Override
 	public void processImage() {
 		// TODO: YOUR CODE HERE
-		finder.findRegions(targetColor);
-		ArrayList<Point> theRegion = finder.largestRegion();
-		Color swappedColor = getSwapColor((Color) targetColor);
-		for (int i = 0; i < theRegion.size() - 1; i++) {
-			Point currentPixel = theRegion.get(i);
-			painting.setRGB((int)currentPixel.getX(), (int)currentPixel.getY(), swappedColor.getRGB());
+		if (displayMode == 'p') {
+			finder.setImage(image);
+			finder.findRegions(targetColor);
+			ArrayList<Point> theRegion = finder.largestRegion();
+			Color swappedColor = getSwapColor((Color) targetColor);
+			for (int i = 0; i < theRegion.size() - 1; i++) {
+				Point currentPixel = theRegion.get(i);
+				painting.setRGB((int)currentPixel.getX(), (int)currentPixel.getY(), swappedColor.getRGB());
+			}	
 		}
 	}
 
@@ -61,7 +65,12 @@ public class CamPaint extends Webcam {
 	@Override
 	public void handleMousePress(int x, int y) {
 		// TODO: YOUR CODE HERE
-		int targetColor = painting.getRGB(x, y);
+		int targetColor = image.getRGB(x, y);
+		Color targetColorObject = new Color(targetColor);
+		System.out.println("Clicked " + String.valueOf(x) + "," + String.valueOf(y)+ ". Target color is now (" 
+				+ String.valueOf(targetColorObject.getRed()) + "," 
+				+ String.valueOf(targetColorObject.getGreen()) + "," 
+				+ String.valueOf(targetColorObject.getBlue()) + ").");
 	}
 	
 	/**
@@ -81,16 +90,21 @@ public class CamPaint extends Webcam {
 	public void handleKeyPress(char k) {
 		if (k == 'p' || k == 'r' || k == 'w') { // display: painting, recolored image, or webcam
 			displayMode = k;
-			System.out.println(k);
+			System.out.println("Mode is now " + k);
 		}
 		else if (k == 'c') { // clear
 			clearPainting();
+			System.out.println("Cleared painting!");
 		}
 		else if (k == 'o') { // save the recolored image
 			saveImage(finder.getRecoloredImage(), "pictures/recolored.png", "png");
+			System.out.println("Saved recolored to pictures.");
+
 		}
 		else if (k == 's') { // save the painting
 			saveImage(painting, "pictures/painting.png", "png");
+			System.out.println("Saved painting to pictures.");
+
 		}
 		else {
 			System.out.println("unexpected key "+k);
