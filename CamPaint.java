@@ -21,17 +21,8 @@ public class CamPaint extends Webcam {
 	 * Initializes the region finder and the drawing
 	 */
 	public CamPaint() {
-		clearPainting();
 		finder = new RegionFinder(painting);
 	}
-	
-	public Color getSwapColor(Color color) {
-			int red = color.getRed();
-			int green = color.getGreen();
-			int blue = color.getBlue();				
-			Color newColor = new Color(green, blue, red);
-			return newColor;
-		}
 
 	/**
 	 * Resets the painting to a blank image
@@ -45,6 +36,7 @@ public class CamPaint extends Webcam {
 	 * depending on display variable ('w', 'r', or 'p')
 	 */
 	public void draw(Graphics g) {
+		// TODO: YOUR CODE HERE
 		g.drawImage(painting, 0, 0, null);
 	}
 
@@ -53,12 +45,13 @@ public class CamPaint extends Webcam {
 	 */
 	@Override
 	public void processImage() {
+		// TODO: YOUR CODE HERE
 		finder.findRegions(targetColor);
-		ArrayList<Pixel> theRegion = finder.largestRegion();
+		ArrayList<Point> theRegion = finder.largestRegion();
 		Color swappedColor = getSwapColor((Color) targetColor);
 		for (int i = 0; i < theRegion.size() - 1; i++) {
-			Pixel currentPixel = theRegion.get(i);
-			painting.setRGB(currentPixel.getX(), currentPixel.getY(), swappedColor.getRGB());
+			Point currentPixel = theRegion.get(i);
+			painting.setRGB((int)currentPixel.getX(), (int)currentPixel.getY(), swappedColor.getRGB());
 		}
 	}
 
@@ -67,7 +60,19 @@ public class CamPaint extends Webcam {
 	 */
 	@Override
 	public void handleMousePress(int x, int y) {
+		// TODO: YOUR CODE HERE
 		int targetColor = painting.getRGB(x, y);
+	}
+	
+	/**
+	 * Custom getSwapColor method
+	 */
+	public Color getSwapColor(Color color) {
+			int red = color.getRed();
+			int green = color.getGreen();
+			int blue = color.getBlue();				
+			Color newColor = new Color(green, blue, red);
+			return newColor;
 	}
 
 	/**

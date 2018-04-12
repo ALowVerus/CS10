@@ -22,7 +22,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.*;
  *
  */
 public class Webcam extends DrawingGUI {
-	protected boolean mac = true;					// TODO: set to true for mac, false for windows
+	protected boolean mac = false;					// TODO: set to true for mac, false for windows
 	private static final double scale = 0.5;		// to downsize the image (for speed), set this to a fraction <= 1
 	private static final boolean mirror = true;		// make true in order to mirror left<->right so your left hand is on the left side of the image
 
