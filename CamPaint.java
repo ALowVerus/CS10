@@ -107,7 +107,7 @@ public class CamPaint extends Webcam {
 
 		}
 		else {
-			System.out.println("unexpected key "+k);
+			System.out.println("unexpected key " + k);
 		}
 	}
 
