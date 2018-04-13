@@ -51,7 +51,7 @@ public class CamPaint extends Webcam {
 			finder.setImage(image);
 			finder.findRegions(targetColor);
 			ArrayList<Point> theRegion = finder.largestRegion();
-			Color swappedColor = getSwapColor((Color) targetColor);
+			Color swappedColor = getSwapColor(targetColor);
 			for (int i = 0; i < theRegion.size() - 1; i++) {
 				Point currentPixel = theRegion.get(i);
 				painting.setRGB((int)currentPixel.getX(), (int)currentPixel.getY(), swappedColor.getRGB());
