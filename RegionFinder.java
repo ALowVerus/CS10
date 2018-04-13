@@ -129,17 +129,16 @@ public class RegionFinder {
 	 * Returns the largest region detected (if any region has been detected)
 	 */
 	public ArrayList<Point> largestRegion() {
-		System.out.println("Largest Region initiated");
 		if(regions.size() > 0) {
 			ArrayList<Point> largest = regions.get(0);	// Initialize largest to first region
-		for (int i = 0; i < regions.size(); i++) {
-			if (largest.size() < regions.get(i).size()) {
-				largest = regions.get(i);
+			for (int i = 0; i < regions.size(); i++) {
+				if (largest.size() < regions.get(i).size()) {
+					largest = regions.get(i);
+				}
 			}
-		}
-		System.out.println(largest.size());
 		return largest;
 		}
+		else { return null; }	
 	}
 	
 	public Color getSwapColor(Color color) {
