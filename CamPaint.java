@@ -16,6 +16,7 @@ public class CamPaint extends Webcam {
 	private Color targetColor = Color.blue; // color of regions of interest (set by mouse press)
 	private Color paintColor = Color.blue;	// the color to put into the painting from the "brush"
 	private BufferedImage painting;			// the resulting masterpiece
+	private Boolean isMouseClicked = false;
 	
 	/**
 	 * Initializes the region finder and the drawing
@@ -48,13 +49,17 @@ public class CamPaint extends Webcam {
 	public void processImage() {
 		// TODO: YOUR CODE HERE
 		if (displayMode == 'p') {
+			System.out.println("Display mode successful");
 			finder.setImage(image);
 			finder.findRegions(targetColor);
 			ArrayList<Point> theRegion = finder.largestRegion();
 			Color swappedColor = getSwapColor(targetColor);
-			for (int i = 0; i < theRegion.size() - 1; i++) {
-				Point currentPixel = theRegion.get(i);
-				painting.setRGB((int)currentPixel.getX(), (int)currentPixel.getY(), swappedColor.getRGB());
+			if(isMouseClicked) {
+				for (int i = 0; i < theRegion.size() - 1; i++) {
+					Point currentPixel = theRegion.get(i);
+					painting.setRGB((int)currentPixel.getX(), (int)currentPixel.getY(), swappedColor.getRGB());
+					System.out.println(i);
+				}
 			}	
 		}
 	}
@@ -71,6 +76,7 @@ public class CamPaint extends Webcam {
 				+ String.valueOf(targetColorObject.getRed()) + "," 
 				+ String.valueOf(targetColorObject.getGreen()) + "," 
 				+ String.valueOf(targetColorObject.getBlue()) + ").");
+		isMouseClicked = true;
 	}
 	
 	/**
@@ -81,6 +87,7 @@ public class CamPaint extends Webcam {
 			int green = color.getGreen();
 			int blue = color.getBlue();				
 			Color newColor = new Color(green, blue, red);
+			System.out.println(newColor);
 			return newColor;
 	}
 
