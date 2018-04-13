@@ -13,7 +13,7 @@ import java.util.*;
  * @author Aidan Low and Eitan Vilker, PS 1
  */
 public class RegionFinder {
-	private static final int maxColorDiff = 25;				// how similar a pixel color must be to the target color, to belong to a region
+	private static final int maxColorDiff = 15;				// how similar a pixel color must be to the target color, to belong to a region
 	private static final int minRegion = 50; 				// how many points in a region to be worth considering
 
 	private BufferedImage image;                            // the image in which to find regions
@@ -61,11 +61,21 @@ public class RegionFinder {
 		}
 	}
 	
+	/**
+	 * Changes points to a different RGB value to indicate whether or not they've been visited, uses ints
+	 * @param point
+	 * @param z
+	 */
 	private void setVisited(int x, int y, Boolean z) {
 		if (z) {visitedImage.setRGB(x, y, 1);}
 		else {visitedImage.setRGB(x, y, 0);}
 	}
 	
+	/**
+	 * Changes points to a different RGB value to indicate whether or not they've been visited, uses Points
+	 * @param point
+	 * @param z
+	 */
 	private void setVisited(Point point, Boolean z) {
 		if (z) {visitedImage.setRGB((int)point.getX(), (int)point.getY(), 1);}
 		else {visitedImage.setRGB((int)point.getX(), (int)point.getY(), 0);}
@@ -78,6 +88,10 @@ public class RegionFinder {
 		return true;
 	}
 	
+	/**
+	 * Creates regions of adjacent Points that match the desired color
+	 * @param targetColor
+	 */
 	public void findRegions(Color targetColor) {
 		this.targetColor = targetColor;
 		visitedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -87,10 +101,12 @@ public class RegionFinder {
 				if (matchRGB(image.getRGB(chosenX, chosenY), targetColor) && !getVisited(chosenX, chosenY)) {
 					Point originPoint = new Point(chosenX, chosenY);
 					pointStack.add(originPoint);
-					regions.add(0, new ArrayList<Point>());
+					regions.add(0, new ArrayList<Point>());   		// Creates new region
 					setVisited(originPoint, true);					// Set to visited
+					// pointStack contains Point objects and always examines the first Point in the stack
 					while (pointStack.size() > 0) {
 						Point chosenPoint = pointStack.get(0);
+						// Looks at all points in 3x3 grid
 						for (int nextY = Math.max((int)chosenPoint.getY() - 1, 0); nextY <= Math.min((int)chosenPoint.getY() + 1, image.getHeight() - 1); nextY++) {									// For y one above and one below
 							for (int nextX = Math.max((int)chosenPoint.getX() - 1, 0); nextX <= Math.min((int)chosenPoint.getX() + 1, image.getWidth() - 1); nextX++) {								// For x one above and one below
 								if (!getVisited(nextX, nextY) && matchRGB(image.getRGB(nextX, nextY), targetColor)) {
@@ -103,6 +119,7 @@ public class RegionFinder {
 						}
 						pointStack.remove(0);					
 					}
+					// Checks if region is large enough to warrant keeping
 					if (regions.get(0).size() <= minRegion) {
 						regions.remove(0);
 					}
@@ -129,24 +146,20 @@ public class RegionFinder {
 	 * Returns the largest region detected (if any region has been detected)
 	 */
 	public ArrayList<Point> largestRegion() {
-		System.out.println(regions);
-		ArrayList<Point> largest = regions.get(0);	// Initialize largest to first region
-		for (int i = 0; i < regions.size(); i++) {
-			if (largest.size() < regions.get(i).size()) {
-				largest = regions.get(i);
-				System.out.println(i);
+		if(regions.size() > 0) {
+			ArrayList<Point> largest = regions.get(0);	// Initialize largest to first region
+			for (int i = 0; i < regions.size(); i++) {
+				if (largest.size() < regions.get(i).size()) {
+					largest = regions.get(i);
+				}
 			}
-		}
-		System.out.println(largest.size());
 		return largest;
-	}
-	
-	public Color getSwapColor(Color color) {
-		int red = color.getRed();
-		int green = color.getGreen();
-		int blue = color.getBlue();				
-		Color newColor = new Color(green, blue, red);
-		return newColor;
+		
+		}
+		
+		else { 
+			return null; 
+		}	
 	}
 
 	/**
@@ -159,6 +172,7 @@ public class RegionFinder {
 		recoloredImage = new BufferedImage(image.getColorModel(), image.copyData(null), image.getColorModel().isAlphaPremultiplied(), null);
 		for (int i = 0; i < regions.size(); i++) {
 			int randomColor = (int) Math.floor(Math.random() * 256 * 256 * 256); 	// Set color to make region
+			randomColor = Color.blue.getRGB();
 			for (int k = 0; k < regions.get(i).size(); k ++) {
 				Point point = regions.get(i).get(k);
 				recoloredImage.setRGB((int)point.getX(), (int)point.getY(), randomColor);
